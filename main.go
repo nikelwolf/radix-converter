@@ -11,6 +11,26 @@ import (
 	"github.com/nikelwolf/radix-converter-go-qt/converter"
 )
 
+type RadixConverter struct {
+	core.QObject
+
+	_ func() `constructor:"init"`
+
+	_ func(string, uint64, uint64) string `slot:"convertButtonClicked"`
+}
+
+func (rc *RadixConverter) init() {
+	rc.ConnectConvertButtonClicked(rc.convertButtonClickHandler)
+}
+
+func (rc *RadixConverter) convertButtonClickHandler(number string, from, to uint64) string {
+	result, err := converter.ConvertNumberToAnotherRadix(number, from, to)
+	if err != nil {
+		return err.Error()
+	}
+	return result
+}
+
 func main() {
 	core.QCoreApplication_SetAttribute(core.Qt__AA_EnableHighDpiScaling, true)
 
@@ -20,7 +40,7 @@ func main() {
 
 	engine := qml.NewQQmlApplicationEngine(nil)
 
-	rc := converter.NewRadixConverter(nil)
+	rc := NewRadixConverter(nil)
 	rc.QmlRegisterType()
 	engine.RootContext().SetContextProperty("_converter", rc)
 
