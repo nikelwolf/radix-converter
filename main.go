@@ -8,7 +8,7 @@ import (
 	"github.com/therecipe/qt/qml"
 	"github.com/therecipe/qt/quickcontrols2"
 
-	"github.com/nikelwolf/radix-converter-go-qt/converter"
+	"github.com/nikelwolf/radix-converter/converter"
 )
 
 type RadixConverter struct {
